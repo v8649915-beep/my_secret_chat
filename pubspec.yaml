@@ -1,5 +1,5 @@
 name: my_secret_chat
-description: My Secret Chat - fixed project for GitHub Actions build
+description: My Secret Chat - stable local chat with translation (build-friendly)
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,6 +10,15 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  provider: ^6.0.5
+  encrypt: ^5.0.1
+  http: ^0.13.6
+  flutter_secure_storage: ^8.0.0
+  uuid: ^3.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true
