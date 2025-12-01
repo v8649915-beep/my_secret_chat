@@ -1,14 +1,17 @@
-
 name: my_secret_chat
-description: A simple encrypted chat placeholder.
-version: 1.0.0
+description: My Secret Chat - fixed project for GitHub Actions build
+publish_to: 'none'
+version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
+  sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icon.png
