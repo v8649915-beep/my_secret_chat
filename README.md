@@ -1,20 +1,26 @@
-PolyTalk - multilingual chat (demo)
-==================================
 
-Что внутри:
-- Flutter-клиент (lib/)
-- Пример Cloud Function для перевода (cloud_functions/)
-- GitHub Actions workflow (сборка APK)
-- assets/icon.png (иконка приложения)
+# Polytalk Chat (scaffold)
 
-Как запустить:
-1) Скачайте и распакуйте этот архив.
-2) Создайте репозиторий на GitHub и загрузите ВСЁ содержимое распакованной папки в корень репозитория.
-3) Убедитесь, что branch main существует — GitHub Actions запустится автоматически.
-4) Откройте Actions -> дождитесь успешной сборки -> скачайте артефакт PolyTalk_apk.
+Это минимальный современный Flutter-проект — локальный прототип чата (без Firebase).
+Я сделал UI, локальное сохранение сообщений и простую структуру проекта. 
+Ты можешь установить APK локально или подключить Firebase позднее.
 
-Подключение Firebase (если нужно):
-- Создайте проект в Firebase Console, добавьте Android приложение, скачайте google-services.json и поместите в android/app/.
-- Добавьте Firebase SDK конфигурацию (см. официальные гайды).
+## Что внутри
+- `lib/main.dart` — точка входа
+- `lib/screens/chat_screen.dart` — экран чата
+- `lib/widgets/message_bubble.dart` — виджет сообщения
+- `pubspec.yaml` — зависимости (shared_preferences, provider)
+- `android/`, `ios/` — минимальные шаблоны Android/iOS (embedding v2)
 
-Если хочешь — могу подключить Firebase и доработать функционал (регистрация, хранение сообщений, шифрование, push).
+## Как собрать (на твоей машине)
+1. Установи Flutter (https://flutter.dev).  
+2. Открой терминал в папке проекта.  
+3. Выполни `flutter pub get`  
+4. Подключи телефон или используй эмулятор.  
+5. `flutter run` или `flutter build apk`
+
+## Как загрузить на GitHub
+1. На странице твоего репозитория нажми **Add file → Upload files** и загрузишь содержимое этой папки.  
+2. Commit → Actions → запусти workflow, как раньше.
+
+Если хочешь — я помогу подключить Firebase и собрать релизные сборки с подписью.

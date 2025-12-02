@@ -1,21 +1,14 @@
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.polytalk">
-
+    package="com.example.polytalk_chat">
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <application
-        android:label="polytalk"
-        android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+    <application android:label="Polytalk Chat" android:icon="@mipmap/ic_launcher">
         <meta-data android:name="flutterEmbedding" android:value="2" />
-        <activity
-            android:name="io.flutter.embedding.android.FlutterActivity"
-            android:exported="true"
-            android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode">
+        <activity android:name="io.flutter.embedding.android.FlutterActivity"
+            android:exported="true" android:theme="@style/LaunchTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

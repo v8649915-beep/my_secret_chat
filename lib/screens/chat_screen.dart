@@ -1,38 +1,89 @@
+
 import 'package:flutter/material.dart';
-import '../services/translate_service.dart';
+import 'package:provider/provider.dart';
+import '../models/chat_model.dart';
+import '../widgets/message_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String peer;
-  final String me;
-  ChatScreen({required this.peer, required this.me});
+  const ChatScreen({Key? key}) : super(key: key);
 
-  @override State<ChatScreen> createState() => _ChatScreenState();
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _ctrl = TextEditingController();
-  final List<Map<String,String>> messages = []; // {from,text}
+  final TextEditingController _controller = TextEditingController();
 
-  void _send() async {
-    final t = _ctrl.text.trim();
-    if (t.isEmpty) return;
-    setState(()=> messages.add({'from': widget.me, 'text': t}));
-    _ctrl.clear();
-    final translated = await TranslateService.translate(t, 'en'); // demo target en
-    if (translated!=null) setState(()=> messages.add({'from': widget.peer, 'text': translated}));
-  }
-
-  @override Widget build(BuildContext ctx) {
+  @override
+  Widget build(BuildContext context) {
+    final chat = Provider.of<ChatModel>(context);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.peer)),
-      body: Column(children: [
-        Expanded(child: ListView.builder(itemCount: messages.length, itemBuilder: (_,i){
-          final m = messages[i];
-          final isMe = m['from']==widget.me;
-          return Align(alignment: isMe?Alignment.centerRight:Alignment.centerLeft, child: Container(margin: EdgeInsets.all(8), padding: EdgeInsets.all(10), decoration: BoxDecoration(color:isMe?Colors.teal[200]:Colors.grey[700], borderRadius: BorderRadius.circular(8)), child: Text(m['text']!)));
-        })),
-        Padding(padding: EdgeInsets.all(8), child: Row(children:[Expanded(child: TextField(controller: _ctrl)), IconButton(icon: Icon(Icons.send), onPressed: _send)]))
-      ],),
+      appBar: AppBar(
+        title: const Text('Polytalk Chat'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_outline),
+            onPressed: () async {
+              final ok = await showDialog<bool>(context: context, builder: (c)=> AlertDialog(
+                title: const Text('Очистить сообщения?'),
+                actions: [
+                  TextButton(onPressed: ()=> Navigator.of(c).pop(false), child: const Text('Отмена')),
+                  TextButton(onPressed: ()=> Navigator.of(c).pop(true), child: const Text('Очистить')),
+                ],
+              ));
+              if (ok == true) {
+                await chat.clear();
+              }
+            },
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Consumer<ChatModel>(
+              builder: (context, model, _) {
+                final messages = model.messages;
+                if (messages.isEmpty) {
+                  return const Center(child: Text('Нет сообщений. Напиши первое!'));
+                }
+                return ListView.builder(
+                  reverse: true,
+                  padding: const EdgeInsets.all(12),
+                  itemCount: messages.length,
+                  itemBuilder: (context, i) => MessageBubble(message: messages[i]),
+                );
+              },
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Написать сообщение...',
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {
+                      final text = _controller.text.trim();
+                      if (text.isEmpty) return;
+                      Provider.of<ChatModel>(context, listen: false).send(text);
+                      _controller.clear();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

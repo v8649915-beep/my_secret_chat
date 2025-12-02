@@ -1,18 +1,28 @@
-import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'screens/chat_screen.dart';
+import 'models/chat_model.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(PolyTalkApp());
+  runApp(const PolytalkApp());
 }
 
-class PolyTalkApp extends StatelessWidget {
+class PolytalkApp extends StatelessWidget {
+  const PolytalkApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PolyTalk',
-      theme: ThemeData(primarySwatch: Colors.teal),
-      home: LoginScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => ChatModel(),
+      child: MaterialApp(
+        title: 'Polytalk Chat',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const ChatScreen(),
+      ),
     );
   }
 }
