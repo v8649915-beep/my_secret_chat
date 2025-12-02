@@ -1,0 +1,32 @@
+name: Build Flutter APK (ensure project)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Ensure project
+        run: |
+          if [ ! -f "android/gradlew" ]; then
+            echo "No android gradle wrapper - running flutter create"
+            flutter create -t app .
+          else
+            echo "Android present"
+          fi
+      - name: Get deps
+        run: flutter pub get
+      - name: Build APK
+        run: flutter build apk --release
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: msc_apk
+          path: build/app/outputs/flutter-apk/app-release.apk
