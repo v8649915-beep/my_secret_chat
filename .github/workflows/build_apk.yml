@@ -2,7 +2,7 @@ name: Build Flutter APK
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -11,25 +11,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.22.0"
-          channel: "stable"
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Enable Android
-        run: flutter config --enable-android
-
       - name: Build APK
         run: flutter build apk --release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: PolyTalk-APK
+          name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
